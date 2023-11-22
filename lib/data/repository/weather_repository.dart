@@ -14,7 +14,13 @@ class WeatherRepository {
     Completer<SearchWeatherFromCityDTO> completer = Completer();
     _apiService
         ?.requestWeatherFromCity(cityName)
-        .then((dataResponse) { print(dataResponse); })
+        .then((dataResponse) {
+            if (dataResponse.data == null || dataResponse.data == "") {
+              completer.complete(SearchWeatherFromCityDTO());
+            } else {
+              completer.complete(SearchWeatherFromCityDTO.fromJson(dataResponse.data));
+            }
+        })
         .catchError((error) { completer.completeError(error); });
 
     return completer.future;
