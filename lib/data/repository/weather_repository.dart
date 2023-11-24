@@ -21,7 +21,9 @@ class WeatherRepository {
               completer.complete(SearchWeatherFromCityDTO.fromJson(dataResponse.data));
             }
         })
-        .catchError((error) { completer.completeError(error.toString()); });
+        .catchError((error) {
+            completer.completeError(error.response?.data["message"] ?? error.toString());
+        });
 
     return completer.future;
   }
